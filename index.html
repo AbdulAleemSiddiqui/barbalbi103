@@ -576,31 +576,29 @@
     const decoded = decodeURIComponent(filename);
     const iframe=document.getElementById('pdf-object');
     const fallbackDiv=document.getElementById('pdf-mobile-fallback');
-    const downloadBtn=document.getElementById('pdf-download-btn');
     
-    // On mobile, show download button instead of trying to embed
+    // On mobile, show Drive preview directly in iframe
     if(isMobile()){
       const driveUrl = _driveFallbacks[decoded];
       if(driveUrl){
-        downloadBtn.href = driveUrl;
-        fallbackDiv.style.display = 'flex';
-        iframe.style.display = 'none';
-        fallbackDiv.style.flexDirection = 'column';
+        iframe.src = driveUrl;
+        iframe.style.display = 'block';
+        fallbackDiv.style.display = 'none';
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         return;
       }
     }
     
-    // On desktop, try to embed the PDF
+    // On desktop, try to embed the PDF from local files
     const directUrl = encodeURI(decoded) + '#toolbar=0&navpanes=0';
     const fallbackTimer = setTimeout(()=>{
       const driveUrl = _driveFallbacks[decoded];
       if(driveUrl){
         console.warn('PDF failed to load, using Drive fallback');
-        iframe.style.display = 'none';
-        downloadBtn.href = driveUrl;
-        fallbackDiv.style.display = 'flex';
+        iframe.src = driveUrl;
+        iframe.style.display = 'block';
+        fallbackDiv.style.display = 'none';
       }
     }, 2000);
     
@@ -613,9 +611,9 @@
       clearTimeout(fallbackTimer);
       const driveUrl = _driveFallbacks[decoded];
       if(driveUrl){
-        iframe.style.display = 'none';
-        downloadBtn.href = driveUrl;
-        fallbackDiv.style.display = 'flex';
+        iframe.src = driveUrl;
+        iframe.style.display = 'block';
+        fallbackDiv.style.display = 'none';
       }
     };
     
