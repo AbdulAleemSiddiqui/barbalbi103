@@ -396,8 +396,12 @@
       <div class="pdf-modal-title" role="heading" aria-level="3" style="color: aliceblue;">⎯● MENU ●⎯</div>
       <button id="pdf-close" class="pdf-close-btn" aria-label="Chiudi">✕</button>
     </div>
-    <div style="flex:1;min-height:0;display:flex">
-      <iframe id="pdf-object" type="application/pdf" src="" width="100%" height="100%" style="border:0"></iframe>
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <iframe id="pdf-object" type="application/pdf" src="" width="100%" height="100%" style="border:0;display:none"></iframe>
+      <div id="pdf-mobile-fallback" style="display:none;text-align:center;padding:2rem">
+        <p style="font-size:0.95rem;color:var(--slate-dark);margin-bottom:1.5rem">Visualizza il menu</p>
+        <a id="pdf-download-btn" href="" target="_blank" rel="noopener" style="display:inline-block;padding:0.9rem 1.8rem;background:var(--teal);color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:0.9rem">Apri in una nuova finestra</a>
+      </div>
     </div>
   </div>
 </div>
@@ -562,39 +566,77 @@
     'MENU BAR BALBI 103.pdf': 'https://drive.google.com/file/d/11NFNYXYWDdB9KyB33dh5vgE2uaQ_UPDg/preview',
     'DRINK MENU FINAL.pdf': 'https://drive.google.com/file/d/1aOL5bYP7IR2VBCi1xT9yCQ9Y54cJmKdl/preview'
   };
+  
+  function isMobile(){
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+  }
+  
   function openEmbeddedPdf(filename){
     const modal=document.getElementById('pdf-modal');
     const decoded = decodeURIComponent(filename);
     const iframe=document.getElementById('pdf-object');
-    // Try direct URL first (works on GitHub Pages)
+    const fallbackDiv=document.getElementById('pdf-mobile-fallback');
+    const downloadBtn=document.getElementById('pdf-download-btn');
+    
+    // On mobile, show download button instead of trying to embed
+    if(isMobile()){
+      const driveUrl = _driveFallbacks[decoded];
+      if(driveUrl){
+        downloadBtn.href = driveUrl;
+        fallbackDiv.style.display = 'flex';
+        iframe.style.display = 'none';
+        fallbackDiv.style.flexDirection = 'column';
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+    }
+    
+    // On desktop, try to embed the PDF
     const directUrl = encodeURI(decoded) + '#toolbar=0&navpanes=0';
-    // Set a timeout to fallback to Drive if PDF doesn't load
     const fallbackTimer = setTimeout(()=>{
       const driveUrl = _driveFallbacks[decoded];
-      if(driveUrl && iframe.src !== driveUrl){
+      if(driveUrl){
         console.warn('PDF failed to load, using Drive fallback');
-        iframe.src = driveUrl;
+        iframe.style.display = 'none';
+        downloadBtn.href = driveUrl;
+        fallbackDiv.style.display = 'flex';
       }
-    }, 3000);
-    iframe.onload = ()=>{ clearTimeout(fallbackTimer); };
+    }, 2000);
+    
+    iframe.onload = ()=>{ 
+      clearTimeout(fallbackTimer);
+      iframe.style.display = 'block';
+      fallbackDiv.style.display = 'none';
+    };
     iframe.onerror = ()=>{
       clearTimeout(fallbackTimer);
       const driveUrl = _driveFallbacks[decoded];
-      if(driveUrl) iframe.src = driveUrl;
+      if(driveUrl){
+        iframe.style.display = 'none';
+        downloadBtn.href = driveUrl;
+        fallbackDiv.style.display = 'flex';
+      }
     };
+    
     iframe.src = directUrl;
-    modal.dataset.fallbackTimer = fallbackTimer;
+    iframe.style.display = 'block';
+    fallbackDiv.style.display = 'none';
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
+  
   document.getElementById('pdf-close').addEventListener('click', ()=>{
     const modalEl=document.getElementById('pdf-modal');
     const iframe=document.getElementById('pdf-object');
-    clearTimeout(modalEl.dataset.fallbackTimer);
+    const fallbackDiv=document.getElementById('pdf-mobile-fallback');
     modalEl.style.display = 'none';
     iframe.src = '';
+    iframe.style.display = 'none';
+    fallbackDiv.style.display = 'none';
     document.body.style.overflow = '';
   });
+  
   // close modal on backdrop click
   document.getElementById('pdf-modal').addEventListener('click', (e)=>{
     if(e.target.id === 'pdf-modal'){
