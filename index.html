@@ -68,14 +68,21 @@
     /* animated fish schools */
     .fish-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
     .fish{position:absolute;opacity:0.06;animation:swim linear infinite}
+    .fish2{position:absolute;opacity:0.06;animation:swim2 linear infinite}
     @keyframes swim{
-      0%{transform:translateX(-120px) translateY(0)}
-      25%{transform:translateX(calc(35vw)) translateY(-18px)}
-      50%{transform:translateX(calc(70vw)) translateY(6px)}
-      75%{transform:translateX(calc(90vw)) translateY(-10px)}
-      100%{transform:translateX(calc(120vw + 120px)) translateY(0)}
+      0%{transform:scaleX(-1) translateX(calc(120vw + 120px)) translateY(0)}
+      25%{transform:scaleX(-1) translateX(calc(70vw)) translateY(-18px)}
+      50%{transform:scaleX(-1) translateX(calc(35vw)) translateY(6px)}
+      75%{transform:scaleX(-1) translateX(calc(10vw)) translateY(-10px)}
+      100%{transform:scaleX(-1) translateX(-120px) translateY(0)}
     }
-
+@keyframes swim2{
+  0%{transform:translateX(calc(120vw + 120px)) translateY(0)}
+  25%{transform:translateX(calc(70vw)) translateY(-18px)}
+  50%{transform:translateX(calc(35vw)) translateY(6px)}
+  75%{transform:translateX(calc(10vw)) translateY(-10px)}
+  100%{transform:translateX(-120px) translateY(0)}
+}
     .logo-wrap{
       width:160px;height:160px;
       background:#fff;
@@ -361,6 +368,13 @@
     <svg class="fish" style="top:38%;animation-duration:26s;animation-delay:-14s;width:65px" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
     <svg class="fish" style="top:72%;animation-duration:35s;animation-delay:-5s;width:44px" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
     <svg class="fish" style="top:10%;animation-duration:28s;animation-delay:-19s;width:55px;transform:scaleY(-1)" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
+  </div>
+    <div class="fish-bg" aria-hidden="true">
+    <svg class="fish2" style="top:28%;animation-duration:22s;animation-delay:0s;width:80px" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
+    <svg class="fish2" style="top:75%;animation-duration:30s;animation-delay:-8s;width:50px;transform:scaleY(-0.8)" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
+    <svg class="fish2" style="top:58%;animation-duration:26s;animation-delay:-14s;width:65px" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
+    <svg class="fish2" style="top:92%;animation-duration:35s;animation-delay:-5s;width:44px" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
+    <svg class="fish2" style="top:20%;animation-duration:28s;animation-delay:-19s;width:55px;transform:scaleY(-1)" viewBox="0 0 60 30" fill="#3AA88A"><path d="M0 15 Q8 6 18 10 Q28 4 40 14 Q50 10 60 15 Q50 20 40 16 Q28 26 18 20 Q8 24 0 15Z M40 14 L56 8 L54 15 L56 22Z"/></svg>
   </div>
 
   <div class="logo-wrap">
